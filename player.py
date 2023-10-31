@@ -8,17 +8,28 @@ class Player(pygame.sprite.Sprite):
         self.image.fill('brown')
         self.rect = self.image.get_rect(topleft = position)
 
+        self.velocity = pygame.math.Vector2()
+
     def input(self):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_w]:
-            self.rect.y -= 5
+            self.velocity.y = -5
         if keys[pygame.K_a]:
-            self.rect.x -= 5
+            self.velocity.x = -5
         if keys[pygame.K_s]:
-            self.rect.y += 5
+            self.velocity.y = 5
         if keys[pygame.K_d]:
-            self.rect.x += 5
+            self.velocity.x = 5
+        if not keys[pygame.K_a] and not keys[pygame.K_d]:
+            self.velocity.x = 0
+        if not keys[pygame.K_w] and not keys[pygame.K_s]:
+            self.velocity.y = 0
+    
+    def move(self):
+        self.rect.x += self.velocity.x
+        self.rect.y += self.velocity.y
     
     def update(self):
         self.input()
+        self.move()
